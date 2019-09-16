@@ -2,19 +2,25 @@ package com.home.userbookwishlist.externalobject;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 @Getter
+@Setter
 @Builder
-@XmlRootElement
-public class ExternalBook {
+@XmlRootElement(name = "ExternalBook")
+public class ExternalBook implements Serializable {
 
-    private final String title;
-    private final String author;
-    private final int isbn;
-    private final String dateOfPublication;
-    private final int bookId;
+    private String title;
+    private String author;
+    private int isbn;
+    private String dateOfPublication;
+    private int bookId;
+
+    public ExternalBook() {
+    }
 
     private ExternalBook(final String title,
                          final String author,

@@ -7,6 +7,7 @@ import com.home.userbookwishlist.jdbc.BookJdbcHelper;
 import com.home.userbookwishlist.model.Book;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class BookSqliteDao implements BookDao {
 
@@ -21,6 +22,15 @@ public class BookSqliteDao implements BookDao {
     public void addBook(final Book book) {
         try {
             bookJdbcHelper.addBook(book);
+        } catch(final SQLException ex) {
+            throw new InternalServiceError("Add Book api is down for sometime. Please try again later!");
+        }
+    }
+
+    @Override
+    public List<Book> getBook(final int bookId) {
+        try {
+            return bookJdbcHelper.getBook(bookId);
         } catch(final SQLException ex) {
             throw new InternalServiceError("Add Book api is down for sometime. Please try again later!");
         }

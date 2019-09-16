@@ -9,11 +9,13 @@ import com.home.userbookwishlist.model.Book;
 import com.home.userbookwishlist.model.User;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserSqliteDao implements UserDao {
 
     private final UserJdbcHelper userJdbcHelper;
 
+    @Inject
     public UserSqliteDao(final UserJdbcHelper userJdbcHelper) {
         this.userJdbcHelper = userJdbcHelper;
     }
@@ -28,11 +30,21 @@ public class UserSqliteDao implements UserDao {
     }
 
     @Override
+    public List<User> getUser(final int userId) {
+        try {
+            return userJdbcHelper.getUser(userId);
+        } catch(final SQLException ex) {
+            throw new InternalServiceError("Add Book api is down for sometime. Please try again later!");
+        }
+    }
+
+
+    @Override
     public void removeUser(final int userId) {
         try {
             userJdbcHelper.removeUser(userId);
         } catch(final SQLException ex) {
-            throw new InternalServiceError("Remove Book api is down for sometime. Please try again later!");
+            throw new InternalServiceError("Remove User api is down for sometime. Please try again later!");
         }
     }
 }

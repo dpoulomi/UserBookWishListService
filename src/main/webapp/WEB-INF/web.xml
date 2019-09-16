@@ -1,41 +1,53 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-         id="WebApp_ID" version="3.1">
+<web-app id="WebApp_ID" version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>Restful Web Application</display-name>
 
+    <!-- Auto scan REST service -->
+    <context-param>
+        <param-name>resteasy.scan</param-name>
+        <param-value>true</param-value>
+    </context-param>
 
-    <display-name>UserBookWishListManagement</display-name>
+    <context-param>
+        <param-name>resteasy.guice.modules</param-name>
+        <param-value>com.home.userbookwishlist.module.UserBookGuiceServiceModule</param-value>
+    </context-param>
 
-    <!--<servlet>
-        <servlet-name>UserBookWishListManagement</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-        <init-param>
-            &lt;!&ndash;<param-name>com.sun.jersey.config.property.packages</param-name>&ndash;&gt;
-            <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>com.home.userbookwishlist.activity.admin</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
+    <!-- this need same with resteasy servlet url-pattern -->
+    <context-param>
+        <param-name>resteasy.servlet.mapping.prefix</param-name>
+        <param-value>/wishlist</param-value>
+    </context-param>
+
+    <!--<listener>
+        <listener-class>
+            org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
+        </listener-class>
+    </listener>-->
+
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>
+            org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener
+        </listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>resteasy-servlet</servlet-name>
+        <servlet-class>
+            org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+        </servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>UserBookWishListManagement</servlet-name>
-        <url-pattern>/wishList/*</url-pattern>
-    </servlet-mapping>-->
-
-
-    <listener>
-        <listener-class>com.home.userbookwishlist.module.UserBookGuiceServletContextListener</listener-class>
-    </listener>
-
-    <filter>
-        <filter-name>guiceFilter</filter-name>
-        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>guiceFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+        <servlet-name>resteasy-servlet</servlet-name>
+        <url-pattern>/wishlist/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>

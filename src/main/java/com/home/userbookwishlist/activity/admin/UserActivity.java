@@ -1,20 +1,18 @@
 package com.home.userbookwishlist.activity.admin;
 
+import com.google.inject.Inject;
 import com.home.userbookwishlist.exception.BadRequestException;
 import com.home.userbookwishlist.exception.InternalServiceError;
 import com.home.userbookwishlist.externalobject.ExternalUser;
-import com.home.userbookwishlist.model.User;
-import com.home.userbookwishlist.service.BookService;
 import com.home.userbookwishlist.service.UserService;
-import com.home.userbookwishlist.sqlitedb.SQLConnectionObject;
-import com.home.userbookwishlist.sqlitedb.SqliteConnection;
-import com.home.userbookwishlist.userapi.AddUser;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/userService")
@@ -22,6 +20,7 @@ public class UserActivity {
 
     private final UserService userService;
 
+    @Inject
     public UserActivity(final UserService userService) {
         this.userService = userService;
     }
@@ -42,15 +41,14 @@ public class UserActivity {
         }
     }
 
-    @POST
+    @GET
     @Path("/removeUser")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.TEXT_PLAIN)
-    public String removeUser(@ModelAttribute final int userId)
+    public String removeUser(@QueryParam("userId") final int userId)
                     throws InternalServiceError, BadRequestException {
         try{
-            userService.removeUser(userId);
-            return "User has been removed successfully";
+            return userService.removeUser(userId);
         } catch(final InternalServiceError ex){
             throw ex;
         } catch(final Exception ex){
